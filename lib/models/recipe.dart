@@ -19,13 +19,13 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-      id: json['id'],
-      title: json['title'],
-      image: json['image'],
-      imageType: json['imageType'],
-      readyInMinutes: json['readyInMinutes'],
-      score: json['spoonacularScore'].floor(),
-      summary: json['summary']
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      image: json['image'] ?? '',
+      imageType: json['imageType'] ?? '',
+      readyInMinutes: json['readyInMinutes'] ?? 0,
+      score: (json['spoonacularScore'] as num?)?.toDouble().floor() ?? 0,
+      summary: json['summary'] ?? '', // Provide default value for missing field
     );
   }
 }

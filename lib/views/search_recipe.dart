@@ -117,6 +117,8 @@ class _SearchRecipeState extends State<SearchRecipe> {
   ];
 
   Future<void> fetchRecipes () async {
+
+
     String baseApiUrl = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=${dotenv.env['API_KEY']}&number=25&addRecipeInformation=true';
     List<String> queryParams = [];
 
@@ -157,6 +159,13 @@ class _SearchRecipeState extends State<SearchRecipe> {
     String finalApiUrl = '$baseApiUrl&${queryParams.join('&')}';
 
     try{
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(color: Colors.green),
+        ),
+      );
       final response = await http.get(Uri.parse(finalApiUrl));
 
       if (response.statusCode == 200){
@@ -168,6 +177,7 @@ class _SearchRecipeState extends State<SearchRecipe> {
         final int totalRecipes = data['totalResults'];
 
         if (mounted) {// Check if the widget is still mounted
+          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -181,6 +191,7 @@ class _SearchRecipeState extends State<SearchRecipe> {
       }
 
     } catch(e) {
+      Navigator.pop(context);
       print('Error Occurred: $e');
     }
   }
@@ -333,6 +344,7 @@ class _SearchRecipeState extends State<SearchRecipe> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),
